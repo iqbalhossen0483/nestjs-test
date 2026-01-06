@@ -10,4 +10,7 @@ export class CreateUserDto {
 export enum UserRole {
   ADMIN = 'admin',
   USER = 'user',
+  SALES_MAN = 'sales_man',
+  STORE_MANAGER = 'store_manager',
+  SUPER_ADMIN = 'super_admin',
 }
