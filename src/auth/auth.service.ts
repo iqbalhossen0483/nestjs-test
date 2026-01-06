@@ -1,0 +1,18 @@
+import { Injectable } from '@nestjs/common';
+import { LoginAuthDto } from './dto/login-auth.dto';
+import { RegisterAuthDto } from './dto/register-auth.dto';
+
+@Injectable()
+export class AuthService {
+  register(registerAuthDto: RegisterAuthDto) {
+    return 'This action adds a new auth';
+  }
+
+  login(loginAuthDto: LoginAuthDto) {
+    return `This action logs in a auth`;
+  }
+
+  getProfile() {
+    return `This action returns all auth`;
+  }
+}
