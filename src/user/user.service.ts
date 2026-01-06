@@ -9,8 +9,8 @@ import { User, UserDocument } from './entities/user.entity';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  create(createAuthDto: CreateUserDto) {
-    const newUser = new this.userModel(createAuthDto);
+  create(createUserDto: CreateUserDto) {
+    const newUser = new this.userModel(createUserDto);
     return newUser.save();
   }
 
@@ -29,7 +29,18 @@ export class UserService {
     return newUser;
   }
 
-  remove(id: string) {
-    return this.userModel.findByIdAndDelete(id);
+  async remove(id: string) {
+    const result = await this.userModel.deleteOne({ _id: id }).exec();
+    if (result.deletedCount === 0) {
+      return {
+        success: false,
+        message: 'User not found',
+      };
+    } else {
+      return {
+        success: true,
+        message: 'User deleted successfully',
+      };
+    }
   }
 }
