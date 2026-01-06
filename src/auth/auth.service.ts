@@ -116,6 +116,11 @@ export class AuthService {
     return { success: true, message: 'Login successful', token };
   }
 
+  logout(res: Response) {
+    res.clearCookie('token');
+    return { success: true, message: 'Logout successful' };
+  }
+
   getProfile() {
     const token = ''; // Placeholder for token retrieval logic
     const decoded = this.decodeToken(token);

@@ -23,6 +23,11 @@ export class AuthController {
     return this.authService.login(createAuthDto, res);
   }
 
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    return this.authService.logout(res);
+  }
+
   @Get('profile')
   getProfile() {
     return this.authService.getProfile();
