@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import bcrypt from 'bcryptjs';
+import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { Model, Types } from 'mongoose';
 import { config } from '../config/config';
@@ -44,11 +45,17 @@ export class AuthService {
     return decoded as jwtPayload;
   }
 
-  private setCookie(token: string) {
-    return `Authorization=${token}; HttpOnly; Path=/; Max-Age=${config.jwtExpire}`;
+  private setCookie(res: Response, token: string) {
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: config.nodeEnv === 'production',
+      sameSite: 'strict',
+      maxAge: 86400000,
+      path: '/',
+    });
   }
 
-  async register(registerAuthDto: RegisterAuthDto) {
+  async register(registerAuthDto: RegisterAuthDto, res: Response) {
     // check if user with the same email already exists
     const existingUser = await this.userModel
       .findOne({ email: registerAuthDto.email })
@@ -79,10 +86,11 @@ export class AuthService {
       email: user.email,
       role: user.role,
     });
-    return { success: true, message: 'User registered successfully', token };
+    this.setCookie(res, token);
+    return { success: true, message: 'Registration successful', token };
   }
 
-  async login(loginAuthDto: LoginAuthDto) {
+  async login(loginAuthDto: LoginAuthDto, res: Response) {
     const { email, password } = loginAuthDto;
 
     const user = await this.userModel.findOne({ email }).exec();
@@ -102,6 +110,8 @@ export class AuthService {
       email: user.email,
       role: user.role,
     });
+
+    this.setCookie(res, token);
 
     return { success: true, message: 'Login successful', token };
   }
