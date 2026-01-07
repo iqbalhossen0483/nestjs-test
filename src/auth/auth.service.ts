@@ -9,7 +9,7 @@ import { User, UserDocument } from '../user/entities/user.entity';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 
-type jwtPayload = {
+export type jwtPayload = {
   _id: Types.ObjectId;
   email: string;
   role: string;
