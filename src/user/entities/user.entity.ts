@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { UserRole } from '../dto/create-user.dto';
 
 export type UserDocument = User & Document;
 
@@ -15,6 +16,15 @@ export class User {
     minlength: [6, 'Password must be at least 6 characters long'],
   })
   password: string;
+
+  @Prop({ default: '' })
+  address: string;
+
+  @Prop({ default: '' })
+  phone: string;
+
+  @Prop({ enum: UserRole, default: 'user' })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
