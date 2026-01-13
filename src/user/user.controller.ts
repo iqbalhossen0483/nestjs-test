@@ -12,31 +12,31 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
-export class AuthController {
-  constructor(private readonly authService: UserService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   create(@Body() createAuthDto: CreateUserDto) {
-    return this.authService.create(createAuthDto);
+    return this.userService.create(createAuthDto);
   }
 
   @Get()
   findAll() {
-    return this.authService.findAll();
+    return this.userService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.authService.findOne(id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAuthDto: UpdateUserDto) {
-    return this.authService.update(id, updateAuthDto);
+    return this.userService.update(id, updateAuthDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.authService.remove(id);
+    return this.userService.remove(id);
   }
 }
